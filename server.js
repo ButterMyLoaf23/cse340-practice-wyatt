@@ -5,22 +5,30 @@ import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const NODE_ENV = process.env.NODE_ENV || "production";
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.set("view engine", "ejs");
+
+app.set("views", path.join(__dirname, "src/views"));
+
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "src/views/home.html"));
+    const title = "Welcome Home";
+    res.render("home", {title});
 });
 
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/views/about.html'));
+    const title = "About me";
+    res.render("about", {title});
 });
 
 app.get("/products", (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/views/products.html'));
+    const title = "Our Products";
+    res.render("products", {title});
 });
 
 app.listen(PORT, () => {
