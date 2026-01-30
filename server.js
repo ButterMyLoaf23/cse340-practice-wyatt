@@ -48,6 +48,40 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
 
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+    res.locals.NODE_ENV = NODE_ENV.toLowerCase() || 'production';
+    // Continue to the next middleware or route handler
+    next();
+});
+
+app.use((req, res, next) => {
+    if (!req.path.startsWith("/.")) {
+        console.log(`${req.method} ${req.url}`);
+    }
+    next();
+});
+
+app.use((req, res, next) => {
+    // Add current year for copyright
+    res.locals.currentYear = new Date().getFullYear();
+    next();
+});
+
+app.use((req, res, next) => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour > 12) {
+        res.greeting = "<p>Good morning!<p>";
+    } else if (currentHour > 18) {
+        res.greeting = "<p>Good afternoon<p>";
+    }
+    else {
+        res.greetings = "<p>Good evening<p>";
+    }
+    next();
+});
+
 app.set("view engine", "ejs");
 
 app.set("views", path.join(__dirname, "src/views"));
