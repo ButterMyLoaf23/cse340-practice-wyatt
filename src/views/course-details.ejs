@@ -31,5 +31,15 @@
     <div class="navigation">
         <p><a href="/catalog">&larr; Back to Course Catalog</a></p>
     </div>
+
+    <% if (queryParams.sort) { %>
+        <div class="sort-message">
+            <p>Currently sorted by: <%= queryParams.sort %></p>
+        </div>
+    <% } else { %>
+        <div class="sort-message">
+            <p>No sorting applied, using default sorting.</p>
+        </div>
+    <% } %>
 </main>
 <%- include('partials/footer') %>

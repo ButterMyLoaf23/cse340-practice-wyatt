@@ -44,6 +44,12 @@ const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV || "production";
 const PORT = process.env.PORT || 3000;
 
+const addDemoHeaders = (req, res, next) => {
+    res.setHeader("X-Demo-Page", "true");
+    res.setHeader("X-Middleware-Demo", "Route-specific middleware works");
+    next();
+};
+
 const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -72,14 +78,32 @@ app.use((req, res, next) => {
     const currentHour = new Date().getHours();
 
     if (currentHour > 12) {
-        res.greeting = "<p>Good morning!<p>";
+        res.locals.greeting = "<p>Good morning!<p>";
     } else if (currentHour > 18) {
-        res.greeting = "<p>Good afternoon<p>";
+        res.locals.greeting = "<p>Good afternoon<p>";
     }
     else {
-        res.greetings = "<p>Good evening<p>";
+        res.locals.greeting = "<p>Good evening<p>";
     }
     next();
+});
+
+app.use((req, res, next) => {
+    const themes = ["blue-theme", "green-theme", "red-theme"];
+    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+    res.locals.bodyClass = randomTheme;
+    next();
+});
+
+app.use((req, res, next) => {
+    res.locals.queryParams = req.query || {};
+    next();
+});
+
+app.get("/demo", addDDemoHeaders, (req, res) => {
+    res.render("demo", {
+        title: "Middleware Demo Page"
+    });
 });
 
 app.set("view engine", "ejs");
