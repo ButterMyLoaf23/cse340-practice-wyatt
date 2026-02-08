@@ -1,4 +1,4 @@
-import { getFacultyById, getSortedFaculty } from '../../models/faculty/faculty.js';
+import { getFacultyBySlug, getSortedFaculty } from '../../models/faculty/faculty.js';
 
 // Faculty list page
 const facultyListPage = (req, res) => {
@@ -15,7 +15,7 @@ const facultyListPage = (req, res) => {
 // Faculty detail page
 const facultyDetailPage = (req, res, next) => {
     const facultyId = req.params.facultyId;
-    const member = getFacultyById(facultyId);
+    const member = getFacultyBySlug(facultyId);
 
     if (!member) {
         const err = new Error('Faculty member not found');
