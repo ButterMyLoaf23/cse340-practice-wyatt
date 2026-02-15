@@ -9,13 +9,9 @@ import db from '../db.js';
  * @returns {Promise<Object>} Faculty object with department info, or empty object if not found
  */
 const getFaculty = async (identifier, identifierType = 'id') => {
-    // Build WHERE clause dynamically - search by slug or id
-    const whereClause = identifierType === 'slug' ? 'f.slug = $1' : 'f.id = $1';
     
-    /**
-     * Join faculty with departments to get department information.
-     * Aliases: f = faculty, d = departments
-     */
+    const whereClause = identifierType === 'slug' ? 'f.slug = $1' : 'f.id = $1';
+
     const query = `
         SELECT f.id, f.first_name, f.last_name, f.office, f.phone, f.email, 
                f.title, f.gender, f.slug, d.name as department_name, d.code as department_code
@@ -53,10 +49,7 @@ const getFaculty = async (identifier, identifierType = 'id') => {
  * @returns {Promise<Array>} Array of faculty objects sorted by the specified field
  */
 const getSortedFaculty = async (sortBy = 'department') => {
-    /**
-     * Build ORDER BY clause - notice we sort by last_name, then first_name for names.
-     * This is the standard way to alphabetize people's names.
-     */
+
     const orderByClause = sortBy === 'name' ? 'f.last_name, f.first_name' :
                           sortBy === 'title' ? 'f.title, f.last_name' :
                           'd.name, f.last_name, f.first_name';
@@ -100,7 +93,6 @@ const getFacultyByDepartment = async (departmentId, sortBy = 'name') => {
                           sortBy === 'title' ? 'f.title, f.last_name' :
                           'd.name, f.last_name, f.first_name';
     
-    // WHERE clause filters to only faculty in the specified department
     const query = `
         SELECT f.id, f.first_name, f.last_name, f.office, f.phone, f.email, 
                f.title, f.gender, f.slug, d.name as department_name, d.code as department_code
@@ -128,10 +120,6 @@ const getFacultyByDepartment = async (departmentId, sortBy = 'name') => {
     }));
 };
 
-/**
- * Wrapper functions for cleaner API - these make the code more readable at the call site.
- * Example: getFacultyById(5) is clearer than getFaculty(5, 'id')
- */
 const getFacultyById = (facultyId) => getFaculty(facultyId, 'id');
 const getFacultyBySlug = (facultySlug) => getFaculty(facultySlug, 'slug');
 
