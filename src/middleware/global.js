@@ -42,7 +42,9 @@ const addLocalVariables = (req, res, next) => {
     res.locals.currentYear = new Date().getFullYear();
     res.locals.queryParams = { ...req.query };
     res.locals.greeting = `<p>${getCurrentGreeting()}</p>`;
+    setHeaderAssestsFunctionality(res); 
 
+    
     const themes = ["blue-theme", "green-theme", "red-theme"];
     const randomTheme = themes[Math.floor(Math.random() * themes.length)];
     res.locals.bodyClass = randomTheme;
