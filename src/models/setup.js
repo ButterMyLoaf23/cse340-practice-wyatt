@@ -42,7 +42,7 @@ const setupDatabase = async () => {
 
     const practicePath = join(__dirname, 'sql', 'practice.sql');
     if (fs.existsSync(practicePath)) {
-        const practiceSQL = fs. readFileSync(practicePath, 'utf8');
+        const practiceSQL = fs.readFileSync(practicePath, 'utf8');
         await db.query(practiceSQL);
         console.log('Practice database tables initialized');
     }
