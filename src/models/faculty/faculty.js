@@ -22,7 +22,6 @@ const getFaculty = async (identifier, identifierType = 'id') => {
     
     const result = await db.query(query, [identifier]);
     
-    // Return empty object if faculty member not found
     if (result.rows.length === 0) return {};
     
     const faculty = result.rows[0];
@@ -30,7 +29,7 @@ const getFaculty = async (identifier, identifierType = 'id') => {
         id: faculty.id,
         firstName: faculty.first_name,
         lastName: faculty.last_name,
-        name: `${faculty.first_name} ${faculty.last_name}`, // Computed full name
+        name: `${faculty.first_name} ${faculty.last_name}`,
         office: faculty.office,
         phone: faculty.phone,
         email: faculty.email,

@@ -13,7 +13,7 @@
     <ul>
         <% faculty.forEach(member => { %>
             <li>
-                <a href="/faculty/<%= member.id %>"><%= member.name %></a><br>
+                <a href="/faculty/<%= member.slug %>"><%= member.name %></a><br>
                 <%= member.department %> — <%= member.title %>
             </li>
         <% }) %>
